@@ -26,6 +26,7 @@
         <akka.version>2.5.16</akka.version>
         <akkahttp.version>10.1.5</akkahttp.version>
         <circe.version>0.9.3</circe.version>
+        <guardrail.version>0.41.3</guardrail.version>
     </properties>
 
     <dependencies>
@@ -220,7 +221,7 @@
             <plugin>
                 <groupId>com.twilio</groupId>
                 <artifactId>guardrail-maven-plugin_2.12</artifactId>
-                <version>0.39.0</version>
+                <version>${guardrail.version}</version>
                 <executions>
                     <execution>
                         <id>generate-app-server</id>

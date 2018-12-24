@@ -9,8 +9,6 @@ import collection.breakOut
 
 class GamesController(gamesDao: GamesDaoTrait)(implicit val ec: ExecutionContext) extends GamesHandler {
 
-  val mylist: IndexedSeq[WireGame] = IndexedSeq.empty
-
   override def addGame(respond: GamesResource.addGameResponse.type)(newGame: WireGame): Future[GamesResource.addGameResponse] = {
     println("add game")
     val intF: Future[Int] = gamesDao.addGame(DbGame.fromWire(newGame))
