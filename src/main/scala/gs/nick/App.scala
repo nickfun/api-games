@@ -54,7 +54,7 @@ object App {
   def database(): jdbc.MySQLProfile.backend.DatabaseDef = {
     val url = sys.env.getOrElse("DB_URL", ERR("missing env DB_URL"))
     val user = sys.env.getOrElse("DB_USER", ERR("missing env DB_USER"))
-    val pass = sys.env.getOrElse("DB_PASS", ERR("missing env DB_PASS"))
+    val pass = sys.env.getOrElse("DB_PASS", "")
     val db: MySQLProfile.backend.DatabaseDef = Database.forURL(url, user, pass)
     db
   }
