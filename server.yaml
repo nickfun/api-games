@@ -1,0 +1,183 @@
+swagger: "2.0"
+info:
+  description: "Games API"
+  version: "1.0.0"
+  title: "Games API"
+  termsOfService: "http://nick.gs/"
+  contact:
+    email: "nick@nick.gs"
+  license:
+    name: "GPL"
+    url: "http://www.fsf.org"
+host: "games.nick.gs"
+tags:
+- name: "games"
+  description: "Manipluation of Games"
+schemes:
+- "https"
+- "http"
+externalDocs:
+  description: "Games API Docs"
+  url: "http://games.nick.gs/docs"
+paths:
+  /games:
+    post:
+      tags:
+      - "games"
+      summary: "Add a new game"
+      description: ""
+      operationId: "addGame"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "newGame"
+        description: "Game Object"
+        required: true
+        schema:
+          $ref: "#/definitions/WireGame"
+      responses:
+        400:
+          description: "Invalid input"
+          schema:
+            type: "string"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/WireGame"
+    get:
+      tags:
+      - "games"
+      summary: "view all known Games"
+      description: ""
+      operationId: "getGameList"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "systemId"
+        in: "query"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        500:
+          description: "Database error"
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/WireGame"
+  /games/{gameId}:
+    get:
+      tags:
+      - "games"
+      summary: "Details of one Game"
+      description: ""
+      operationId: "getGameById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        description: ""
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/WireGame"
+        404:
+          description: "Invalid Game ID value"
+    delete:
+      tags:
+      - "games"
+      summary: "delete a single game"
+      description: ""
+      operationId: "deleteGameById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        description: ""
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "successful operation"
+        404:
+          description: "can not find game"
+    patch:
+      tags:
+      - "games"
+      summary: "Update an existing Game"
+      description: ""
+      operationId: "updateGameById"
+      produces:
+      - "application/json"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        description: ""
+        required: true
+        type: "number"
+      - in: "body"
+        name: "newGame"
+        description: "Game Object"
+        required: true
+        schema:
+          $ref: "#/definitions/WireGame"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/WireGame"
+        404:
+          description: "Game not found"
+
+definitions:
+  WireGame:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      name:
+        type: "string"
+      sysid:
+        type: "integer"
+        format: "int32"
+      release:
+        type: "string"
+      has_case:
+        type: "integer"
+        format: "int32"
+      has_docs:
+        type: "integer"
+        format: "int32"
+      is_ghit:
+        type: "integer"
+        format: "int32"
+      is_limited:
+        type: "integer"
+        format: "int32"
+      is_complete:
+        type: "integer"
+        format: "int32"
+      is_broken:
+        type: "integer"
+        format: "int32"
+      comment:
+        type: "string"
+    required:
+      - name
+      - sysid
+      - comment
