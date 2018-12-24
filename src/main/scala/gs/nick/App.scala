@@ -6,12 +6,15 @@ import gs.nick.server.games.GamesResource
 import akka.http.scaladsl.server.HttpApp
 import akka.http.scaladsl.server.Route
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings, Supervision}
+import slick.jdbc
+import slick.jdbc.MySQLProfile
+import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.ExecutionContext
 
 // Server definition
 // see https://doc.akka.io/docs/akka-http/current/routing-dsl/HttpApp.html
-class WebServer extends HttpApp {
+class WebServer(gamesDao: GamesDaoTrait) extends HttpApp {
 
   implicit val restActorSystem: ActorSystem = ActorSystem(name="todos-api")
   implicit val executionContext: ExecutionContext = restActorSystem.dispatcher
@@ -22,7 +25,7 @@ class WebServer extends HttpApp {
     sPort.toInt
   }
 
-  val gamesController = new GamesController
+  val gamesController = new GamesController(gamesDao)
 
   override def routes: Route = {
 
@@ -34,12 +37,26 @@ class WebServer extends HttpApp {
 
 object App {
   def main(args: Array[String]) = {
-    val server = new WebServer
+    val db = database()
+    val gamesDao = new GamesDao(db)
+    val server = new WebServer(gamesDao)
   	val port = server.getPort
     systemDebug()
     println(s"STARTUP port = $port")
     server.startServer("0.0.0.0", port)
     println(s"SHUTDOWN server has exited")
+  }
+
+  def ERR(msg: String) = {
+    throw new RuntimeException(s"Error! $msg")
+  }
+
+  def database(): jdbc.MySQLProfile.backend.DatabaseDef = {
+    val url = sys.env.getOrElse("DB_URL", ERR("missing env DB_URL"))
+    val user = sys.env.getOrElse("DB_USER", ERR("missing env DB_USER"))
+    val pass = sys.env.getOrElse("DB_PASS", ERR("missing env DB_PASS"))
+    val db: MySQLProfile.backend.DatabaseDef = Database.forURL(url, user, pass)
+    db
   }
 
   def systemDebug(): Unit = {

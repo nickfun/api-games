@@ -2,10 +2,11 @@ package gs.nick
 
 
 import gs.nick.server.definitions.WireGame
+import slick.jdbc.MySQLProfile
 
 import scala.concurrent.Future
-
 import slick.jdbc.MySQLProfile.api._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 // scala slick
@@ -72,12 +73,7 @@ object GamesTable {
   val allGames = TableQuery[GamesTable]
 }
 
-object GamesDao {
-  val url = "jdbc:mysql://localhost/nickf1?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull"
-  val user = "root"
-  val pass = ""
-
-  val db = Database.forURL(url, user, pass)
+class GamesDao(db: MySQLProfile.backend.DatabaseDef) extends GamesDaoTrait {
 
   def getAllGames: Future[Seq[DbGame]] = {
     db.run(GamesTable.allGames.result)
@@ -93,6 +89,7 @@ object GamesDao {
 
   /**
     * Insert a game. On success, return the new ID of the game
+    *
     * @param game
     * @return
     */
@@ -101,4 +98,5 @@ object GamesDao {
     val insertAction = (data returning data.map(_.id)) += game
     db.run(insertAction)
   }
+
 }
