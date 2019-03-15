@@ -40,6 +40,32 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/WireSystem"
+  /systems/{systemId}:
+    get:
+      tags:
+      - "systems"
+      summary: "Details of one Console System"
+      description: ""
+      operationId: "getSystemById"
+      parameters:
+      - name: "systemId"
+        in: "path"
+        description: ""
+        required: true
+        type: "number"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        500:
+          description: "Internal Error, Database"
+        404:
+          description: "System not found"
+        200:
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/WireSystem"
   /games:
     post:
       tags:

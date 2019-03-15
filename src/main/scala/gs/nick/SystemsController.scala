@@ -14,4 +14,11 @@ class SystemsController(systemsDao: SystemsDaoTrait)(implicit val ec: ExecutionC
       respond.OK(asWire)
     }
   }
+
+  def getSystemById(respond: SystemsResource.getSystemByIdResponse.type)(systemId: BigDecimal): Future[SystemsResource.getSystemByIdResponse] = {
+    systemsDao.getSystemById(systemId.toInt) map {
+      case None => respond.NotFound
+      case Some(system: DbSystem) => respond.OK(system.toWire)
+    }
+  }
 }
