@@ -3,10 +3,8 @@ package gs.nick
 
 import gs.nick.server.definitions.WireGame
 import slick.jdbc.MySQLProfile
-
 import scala.concurrent.Future
 import slick.jdbc.MySQLProfile.api._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 // scala slick

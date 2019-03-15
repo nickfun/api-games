@@ -20,6 +20,26 @@ externalDocs:
   description: "Games API Docs"
   url: "http://games.nick.gs/docs"
 paths:
+  /systems:
+    get:
+      tags:
+      - "systems"
+      summary: "List of all Console Systems"
+      description: ""
+      operationId: "getSystemList"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        500:
+          description: "Internal Error, Database"
+        200:
+          description: "Successful Operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/WireSystem"
   /games:
     post:
       tags:
@@ -144,6 +164,26 @@ paths:
           description: "Game not found"
 
 definitions:
+  WireSystem:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      name:
+        type: "string"
+      company:
+        type: "string"
+      release:
+        type: "string"
+      comments:
+        type: "string"
+      num:
+        type: "integer"
+        format: "int32"
+    required:
+      - name
+      - company
   WireGame:
     type: "object"
     properties:

@@ -1,6 +1,6 @@
 package gs.nick.tests
 
-import gs.nick.{DbGame, GamesDao, GamesDaoTrait, WebServer}
+import gs.nick._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import gs.nick.server.AkkaHttpImplicits._
 import org.scalatest.FunSpec
@@ -14,7 +14,7 @@ class AppTestSuite extends FunSpec with ScalatestRouteTest {
 
 
   def generateServer: WebServer = {
-    new gs.nick.WebServer(DummyGamesDao)
+    new gs.nick.WebServer(DummyGamesDao, DummySystemsDao)
   }
 
   describe("Basic routes") {
@@ -40,4 +40,8 @@ object DummyGamesDao extends GamesDaoTrait {
   override def getGame(id: Int): Future[Option[DbGame]] = ???
 
   override def addGame(game: DbGame): Future[Int] = ???
+}
+
+object DummySystemsDao extends SystemsDaoTrait {
+  override def getAllSystems: Future[Seq[DbSystem]] = ???
 }

@@ -6,6 +6,7 @@ import gs.nick.server.games.GamesResource
 import akka.http.scaladsl.server.HttpApp
 import akka.http.scaladsl.server.Route
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings, Supervision}
+import gs.nick.server.systems.SystemsResource
 import slick.jdbc
 import slick.jdbc.MySQLProfile
 import slick.jdbc.MySQLProfile.api._
@@ -14,7 +15,7 @@ import scala.concurrent.ExecutionContext
 
 // Server definition
 // see https://doc.akka.io/docs/akka-http/current/routing-dsl/HttpApp.html
-class WebServer(gamesDao: GamesDaoTrait) extends HttpApp {
+class WebServer(gamesDao: GamesDaoTrait, systemsDao: SystemsDaoTrait) extends HttpApp {
 
   implicit val restActorSystem: ActorSystem = ActorSystem(name="todos-api")
   implicit val executionContext: ExecutionContext = restActorSystem.dispatcher
@@ -26,12 +27,15 @@ class WebServer(gamesDao: GamesDaoTrait) extends HttpApp {
   }
 
   val gamesController = new GamesController(gamesDao)
+  val systemsController = new SystemsController(systemsDao)
 
   override def routes: Route = {
 
     val homeRoutes = pathSingleSlash { get { complete("The server is running :-D ")}}
 
-    homeRoutes ~ GamesResource.routes(gamesController)
+    homeRoutes ~
+      GamesResource.routes(gamesController) ~
+      SystemsResource.routes(systemsController)
   }
 }
 
@@ -39,7 +43,8 @@ object App {
   def main(args: Array[String]) = {
     val db = database()
     val gamesDao = new GamesDao(db)
-    val server = new WebServer(gamesDao)
+    val systemsDao = new SystemsDao(db)
+    val server = new WebServer(gamesDao, systemsDao)
   	val port = server.getPort
     systemDebug()
     println(s"STARTUP port = $port")
