@@ -1,3 +1,2 @@
 #!/bin/bash
-mvn package
-honcho start
+mvn clean && mvn package && honcho start

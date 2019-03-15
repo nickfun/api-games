@@ -44,4 +44,8 @@ object DummyGamesDao extends GamesDaoTrait {
 
 object DummySystemsDao extends SystemsDaoTrait {
   override def getAllSystems: Future[Seq[DbSystem]] = ???
+
+  override def getSystemById(id: Int): Future[Option[DbSystem]] = ???
+
+  override def addSystem(newSystem: DbSystem): Future[Int] = ???
 }

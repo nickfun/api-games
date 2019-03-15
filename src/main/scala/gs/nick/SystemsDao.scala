@@ -58,4 +58,14 @@ class SystemsDao(db: MySQLProfile.backend.DatabaseDef) extends SystemsDaoTrait {
   override def getAllSystems: Future[Seq[DbSystem]] = {
     db.run(SystemsTable.allSystems.result)
   }
+
+  override def getSystemById(sysid: Int): Future[Option[DbSystem]] = {
+    db.run(SystemsTable.allSystems.filter(_.id === sysid).result).map(_.headOption)
+  }
+
+  override def addSystem(newSystem: DbSystem): Future[Int] = {
+    val data = SystemsTable.allSystems
+    val insertAction = (data returning data.map(_.id)) += newSystem
+    db.run(insertAction)
+  }
 }
