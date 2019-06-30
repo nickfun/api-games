@@ -65,17 +65,22 @@ object App {
   }
 
   def systemDebug(): Unit = {
-    Seq(
-      "----------",
-      "System Info:",
-      "java.version = " + System.getProperty("java.version"),
-      "java.vm.name = " + System.getProperty("java.vm.name"),
-      "java.vendor = " + System.getProperty("java.vendor"),
-      "java.class.path = " + System.getProperty("java.class.path"),
-      "os.name = " + System.getProperty("os.name"),
-      "os.arch = " + System.getProperty("os.arch"),
-      "os.version = " + System.getProperty("os.version"),
-      "----------"
-    ).foreach(println)
+
+    val properties = Seq(
+      "java.version",
+      "java.vm.name",
+      "java.vendor",
+      "java.class.path",
+      "os.name",
+      "os.arch",
+      "os.version"
+    ).map { sys =>
+      val prop = System.getProperty(sys)
+      s"$sys\n  $prop"
+    }
+
+    val border = "==================="
+
+    (border +: properties :+ border).foreach(println)
   }
 }
