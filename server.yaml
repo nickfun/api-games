@@ -21,6 +21,30 @@ externalDocs:
   url: "http://games.nick.gs/docs"
 paths:
   /systems:
+    post:
+      tags:
+      - "systems"
+      summary: "Create a new Console System"
+      description: ""
+      operationId: "createSystem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "newSystem"
+        description: "System Object"
+        required: true
+        schema:
+          $ref: "#/definitions/WireSystem"
+      responses:
+        200:
+          description: "Successful Creation"
+          schema:
+            $ref: "#/definitions/WireSystem"
+        500:
+          description: "Internal Error, Database"
     get:
       tags:
       - "systems"

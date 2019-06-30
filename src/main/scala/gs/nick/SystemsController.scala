@@ -21,4 +21,12 @@ class SystemsController(systemsDao: SystemsDaoTrait)(implicit val ec: ExecutionC
       case Some(system: DbSystem) => respond.OK(system.toWire)
     }
   }
+
+  override def createSystem(respond: SystemsResource.createSystemResponse.type)(newSystem: WireSystem): Future[SystemsResource.createSystemResponse] = {
+    val dbSystem = DbSystem.fromWire(newSystem)
+    systemsDao.addSystem(dbSystem) map { newId =>
+      val respondSystem = newSystem.copy(id = Some(newId))
+      respond.OK(respondSystem)
+    }
+  }
 }
