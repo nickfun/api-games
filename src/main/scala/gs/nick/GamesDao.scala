@@ -1,6 +1,5 @@
 package gs.nick
 
-
 import gs.nick.server.definitions.WireGame
 import slick.jdbc.MySQLProfile
 import scala.concurrent.Future
@@ -11,22 +10,32 @@ import scala.concurrent.ExecutionContext.Implicits.global
 // read up at http://slick.lightbend.com/doc/3.2.0/queries.html
 
 case class DbGame(
-  id: Int,
-  name: String,
-  sysId: Int,
-  release: Option[String],
-  comment: String,
-  hasCase: Int,
-  hasDocs: Int,
-  isGHit: Int,
-  isLimited: Int,
-  isComplete: Int,
-  isBroken: Int
+    id: Int,
+    name: String,
+    sysId: Int,
+    release: Option[String],
+    comment: String,
+    hasCase: Int,
+    hasDocs: Int,
+    isGHit: Int,
+    isLimited: Int,
+    isComplete: Int,
+    isBroken: Int
 ) {
+
   def toWire: WireGame = {
     WireGame(
-      Option(id), name, sysId, release, Option(hasCase), Option(hasDocs),
-      Option(isGHit), Option(isLimited), Option(isComplete), Option(isBroken), comment
+      Option(id),
+      name,
+      sysId,
+      release,
+      Option(hasCase),
+      Option(hasDocs),
+      Option(isGHit),
+      Option(isLimited),
+      Option(isComplete),
+      Option(isBroken),
+      comment
     )
   }
 }
@@ -64,7 +73,8 @@ class GamesTable(tag: Tag) extends Table[DbGame](tag, "games") {
   def isComplete = column[Int]("is_complete")
   def isBroken = column[Int]("is_broken")
 
-  def * = (id, name, sysid, release, comment, hasCase, hasDocs, isGHit, isLimited, isComplete, isBroken) <> ((DbGame.apply _).tupled, DbGame.unapply _)
+  def * =
+    (id, name, sysid, release, comment, hasCase, hasDocs, isGHit, isLimited, isComplete, isBroken) <> ((DbGame.apply _).tupled, DbGame.unapply _)
 }
 
 object GamesTable {
@@ -86,11 +96,11 @@ class GamesDao(db: MySQLProfile.backend.DatabaseDef) extends GamesDaoTrait {
   }
 
   /**
-    * Insert a game. On success, return the new ID of the game
-    *
-    * @param game
-    * @return
-    */
+   * Insert a game. On success, return the new ID of the game
+   *
+   * @param game
+   * @return
+   */
   def addGame(game: DbGame): Future[Int] = {
     val data = GamesTable.allGames
     val insertAction = (data returning data.map(_.id)) += game

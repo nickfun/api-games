@@ -7,13 +7,14 @@ import slick.jdbc.MySQLProfile.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 case class DbSystem(
-  id: Int,
-  name: String,
-  company: String,
-  release: Option[String],
-  comments: String,
-  num: Int
+    id: Int,
+    name: String,
+    company: String,
+    release: Option[String],
+    comments: String,
+    num: Int
 ) {
+
   def toWire: WireSystem = {
     WireSystem(
       Option(id),
@@ -27,6 +28,7 @@ case class DbSystem(
 }
 
 object DbSystem {
+
   def fromWire(wire: WireSystem): DbSystem = {
     DbSystem(
       wire.id.getOrElse(-1),

@@ -236,6 +236,26 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- format -->
+            <plugin>
+                <groupId>org.antipathy</groupId>
+                <artifactId>mvn-scalafmt_2.11</artifactId>
+                <version>1.0.0-RC3</version>
+                <configuration>
+                    <parameters>--mode diff --debug --diff</parameters> <!-- (Optional) Additional command line arguments -->
+                    <configLocation>${project.basedir}/scalafmt.conf</configLocation> <!-- (Optional) config location -->
+                    <configRequired>true</configRequired><!-- (Optional) raise an error if configLocation is missing or invalid (otherwise use Scalafmt defaults) -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

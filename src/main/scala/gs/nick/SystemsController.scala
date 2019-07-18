@@ -8,7 +8,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class SystemsController(systemsDao: SystemsDaoTrait)(implicit val ec: ExecutionContext) extends SystemsHandler {
 
-  def getSystemList(respond: SystemsResource.getSystemListResponse.type)(): Future[SystemsResource.getSystemListResponse] = {
+  def getSystemList(
+      respond: SystemsResource.getSystemListResponse.type)(): Future[SystemsResource.getSystemListResponse] = {
     println("get all systems")
     systemsDao.getAllSystems map { all =>
       val asWire = all.map(_.toWire)(breakOut): IndexedSeq[WireSystem]
@@ -16,7 +17,8 @@ class SystemsController(systemsDao: SystemsDaoTrait)(implicit val ec: ExecutionC
     }
   }
 
-  def getSystemById(respond: SystemsResource.getSystemByIdResponse.type)(systemId: BigDecimal): Future[SystemsResource.getSystemByIdResponse] = {
+  def getSystemById(respond: SystemsResource.getSystemByIdResponse.type)(
+      systemId: BigDecimal): Future[SystemsResource.getSystemByIdResponse] = {
     println("get one system")
     systemsDao.getSystemById(systemId.toInt) map {
       case None => respond.NotFound
@@ -24,7 +26,8 @@ class SystemsController(systemsDao: SystemsDaoTrait)(implicit val ec: ExecutionC
     }
   }
 
-  override def createSystem(respond: SystemsResource.createSystemResponse.type)(newSystem: WireSystem): Future[SystemsResource.createSystemResponse] = {
+  override def createSystem(respond: SystemsResource.createSystemResponse.type)(
+      newSystem: WireSystem): Future[SystemsResource.createSystemResponse] = {
     println("create a system")
     val dbSystem = DbSystem.fromWire(newSystem)
     systemsDao.addSystem(dbSystem) map { newId =>

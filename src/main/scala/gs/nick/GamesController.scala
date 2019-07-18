@@ -6,10 +6,10 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import collection.breakOut
 
-
 class GamesController(gamesDao: GamesDaoTrait)(implicit val ec: ExecutionContext) extends GamesHandler {
 
-  override def addGame(respond: GamesResource.addGameResponse.type)(newGame: WireGame): Future[GamesResource.addGameResponse] = {
+  override def addGame(respond: GamesResource.addGameResponse.type)(
+      newGame: WireGame): Future[GamesResource.addGameResponse] = {
     println("add game")
     val intF: Future[Int] = gamesDao.addGame(DbGame.fromWire(newGame))
     val x = intF
@@ -24,7 +24,8 @@ class GamesController(gamesDao: GamesDaoTrait)(implicit val ec: ExecutionContext
     }
   }
 
-  override def getGameById(respond: GamesResource.getGameByIdResponse.type)(gameId: BigDecimal): Future[GamesResource.getGameByIdResponse] = {
+  override def getGameById(respond: GamesResource.getGameByIdResponse.type)(
+      gameId: BigDecimal): Future[GamesResource.getGameByIdResponse] = {
     println("get game by id " + gameId)
     gamesDao.getGame(gameId.toInt).map {
       case Some(game: DbGame) => respond.OK(game.toWire)
@@ -32,14 +33,17 @@ class GamesController(gamesDao: GamesDaoTrait)(implicit val ec: ExecutionContext
     }
   }
 
-  override def deleteGameById(respond: GamesResource.deleteGameByIdResponse.type)(gameId: BigDecimal): Future[GamesResource.deleteGameByIdResponse] = {
+  override def deleteGameById(respond: GamesResource.deleteGameByIdResponse.type)(
+      gameId: BigDecimal): Future[GamesResource.deleteGameByIdResponse] = {
     println("delete game by id")
     Future {
       respond.OK
     }
   }
 
-  override def updateGameById(respond: GamesResource.updateGameByIdResponse.type)(gameId: BigDecimal, newGame: WireGame): Future[GamesResource.updateGameByIdResponse] = {
+  override def updateGameById(respond: GamesResource.updateGameByIdResponse.type)(
+      gameId: BigDecimal,
+      newGame: WireGame): Future[GamesResource.updateGameByIdResponse] = {
     println("update game by id")
     Future {
       val g = WireGame(None, "Metal Gear", 1, None, None, None, None, None, None, None, "cool game bro")
@@ -47,8 +51,9 @@ class GamesController(gamesDao: GamesDaoTrait)(implicit val ec: ExecutionContext
     }
   }
 
-  override def getGameList(respond: GamesResource.getGameListResponse.type)(systemId: Option[Int]): Future[GamesResource.getGameListResponse] = {
-    println("Get games list: " + systemId.map(x=>s"system $x").getOrElse("all games"))
+  override def getGameList(respond: GamesResource.getGameListResponse.type)(
+      systemId: Option[Int]): Future[GamesResource.getGameListResponse] = {
+    println("Get games list: " + systemId.map(x => s"system $x").getOrElse("all games"))
     if (systemId.isDefined) {
       gamesDao.getAllBySystem(systemId.get) map { all =>
         val asWire = all.map(_.toWire)(breakOut): IndexedSeq[WireGame]
