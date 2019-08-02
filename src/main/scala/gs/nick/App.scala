@@ -17,7 +17,7 @@ import scala.concurrent.ExecutionContext
 // see https://doc.akka.io/docs/akka-http/current/routing-dsl/HttpApp.html
 class WebServer(gamesDao: GamesDaoTrait, systemsDao: SystemsDaoTrait) extends HttpApp {
 
-  implicit val restActorSystem: ActorSystem = ActorSystem(name = "todos-api")
+  implicit val restActorSystem: ActorSystem = ActorSystem(name = "games-api")
   implicit val executionContext: ExecutionContext = restActorSystem.dispatcher
   implicit val materializer: ActorMaterializer = ActorMaterializer()
 
@@ -77,7 +77,7 @@ object App {
       "os.version"
     ).map { sys =>
       val prop = System.getProperty(sys)
-      s"$sys\n  $prop"
+      s"$sys\n    $prop"
     }
 
     val border = "==================="

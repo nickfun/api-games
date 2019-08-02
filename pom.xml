@@ -26,7 +26,7 @@
         <akka.version>2.5.16</akka.version>
         <akkahttp.version>10.1.5</akkahttp.version>
         <circe.version>0.9.3</circe.version>
-        <guardrail.version>0.41.3</guardrail.version>
+        <guardrail.version>0.52.1</guardrail.version>
     </properties>
 
     <dependencies>
