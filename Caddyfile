@@ -1,4 +1,4 @@
-localhost:{$EDGE_PORT} {
+:{$EDGE_PORT} {
 	tls off
 	log stdout
 	errors stdout

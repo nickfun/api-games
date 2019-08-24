@@ -22,7 +22,7 @@ class WebServer(gamesDao: GamesDaoTrait, systemsDao: SystemsDaoTrait) extends Ht
   implicit val materializer: ActorMaterializer = ActorMaterializer()
 
   def getPort: Int = {
-    val sPort = sys.env.getOrElse("API_PORT", "8080")
+    val sPort = sys.env.getOrElse("API_PORT", ERR("API_PORT must be set in environment"))
     sPort.toInt
   }
 
@@ -36,6 +36,13 @@ class WebServer(gamesDao: GamesDaoTrait, systemsDao: SystemsDaoTrait) extends Ht
     homeRoutes ~
       GamesResource.routes(gamesController) ~
       SystemsResource.routes(systemsController)
+  }
+}
+
+object ERR {
+  def apply(msg: String) = {
+  	println(s"Fatal Error! $msg")
+    throw new RuntimeException(s"Fatal Error! $msg")
   }
 }
 
@@ -53,10 +60,6 @@ object App {
     println(s"SHUTDOWN server has exited")
   }
 
-  def ERR(msg: String) = {
-    throw new RuntimeException(s"Error! $msg")
-  }
-
   def database(): jdbc.MySQLProfile.backend.DatabaseDef = {
     val url = sys.env.getOrElse("DB_URL", ERR("missing env DB_URL"))
     val user = sys.env.getOrElse("DB_USER", ERR("missing env DB_USER"))
@@ -66,7 +69,10 @@ object App {
   }
 
   def systemDebug(): Unit = {
-
+    def print(title: String, msg: String, len: Int) = {
+      val extra = " " * (len - title.length)
+      println(title + extra + msg)
+    }
     val properties = Seq(
       "java.version",
       "java.vm.name",
@@ -75,13 +81,12 @@ object App {
       "os.name",
       "os.arch",
       "os.version"
-    ).map { sys =>
-      val prop = System.getProperty(sys)
-      s"$sys\n    $prop"
-    }
+    )
+    val len = properties.map(_.length).max + 2
+    val border = "=" * len
 
-    val border = "==================="
-
-    (border +: properties :+ border).foreach(println)
+    println(border)
+    properties.foreach(k => print(k, System.getProperty(k), len))
+    println(border)
   }
 }
