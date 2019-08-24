@@ -20,7 +20,7 @@ externalDocs:
   description: "Games API Docs"
   url: "http://games.nick.gs/docs"
 paths:
-  /systems:
+  /api/systems:
     post:
       tags:
       - "systems"
@@ -64,7 +64,7 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/WireSystem"
-  /systems/{systemId}:
+  /api/systems/{systemId}:
     get:
       tags:
       - "systems"
@@ -90,7 +90,7 @@ paths:
           description: "Successful Operation"
           schema:
             $ref: "#/definitions/WireSystem"
-  /games:
+  /api/games:
     post:
       tags:
       - "games"
@@ -142,7 +142,7 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/WireGame"
-  /games/{gameId}:
+  /api/games/{gameId}:
     get:
       tags:
       - "games"

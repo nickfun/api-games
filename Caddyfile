@@ -1,0 +1,7 @@
+localhost:{$EDGE_PORT} {
+	tls off
+	log stdout
+	root /Users/nfunnell/junk/games-ui/build
+	proxy /api localhost:8080
+}
+
