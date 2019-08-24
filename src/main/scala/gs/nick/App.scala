@@ -22,7 +22,7 @@ class WebServer(gamesDao: GamesDaoTrait, systemsDao: SystemsDaoTrait) extends Ht
   implicit val materializer: ActorMaterializer = ActorMaterializer()
 
   def getPort: Int = {
-    val sPort = sys.env.getOrElse("PORT", "8080")
+    val sPort = sys.env.getOrElse("API_PORT", "8080")
     sPort.toInt
   }
 

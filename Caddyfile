@@ -1,7 +1,8 @@
 localhost:{$EDGE_PORT} {
 	tls off
 	log stdout
-	root /Users/nfunnell/junk/games-ui/build
-	proxy /api localhost:8080
+	errors stdout
+	root {$STATIC_DIR}
+	proxy /api localhost:{$API_PORT}
 }
 
