@@ -40,8 +40,9 @@ class WebServer(gamesDao: GamesDaoTrait, systemsDao: SystemsDaoTrait) extends Ht
 }
 
 object ERR {
+
   def apply(msg: String) = {
-  	println(s"Fatal Error! $msg")
+    println(s"Fatal Error! $msg")
     throw new RuntimeException(s"Fatal Error! $msg")
   }
 }

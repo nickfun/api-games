@@ -21,11 +21,12 @@
         <encoding>UTF-8</encoding>
         <scala.version>2.12.6</scala.version>
         <scala.compat.version>2.12</scala.compat.version>
-        <spec2.version>4.2.0</spec2.version>
+        <spec2.version>4.7.1</spec2.version>
         <project.basedir>.</project.basedir>
         <akka.version>2.5.16</akka.version>
-        <akkahttp.version>10.1.5</akkahttp.version>
+        <akkahttp.version>10.1.9</akkahttp.version>
         <circe.version>0.9.3</circe.version>
+        <slick.version>3.3.2</slick.version>
         <guardrail.version>0.52.1</guardrail.version>
     </properties>
 
@@ -103,12 +104,12 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.13</version>
+            <version>8.0.17</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe.slick</groupId>
             <artifactId>slick_2.12</artifactId>
-            <version>3.2.0</version>
+            <version>${slick.version}</version>
         </dependency>
 
 
