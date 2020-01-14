@@ -10,3 +10,5 @@ A simple REST API to keep track of my video game library. Mostly a playground fo
 The default port is 8080, overwrite with `PORT` environment variable
 
 See the `server.yaml` file for the API specification. 
+
+other: none yet
